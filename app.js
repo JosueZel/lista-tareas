@@ -1,34 +1,22 @@
 const express = require("express");
 const app = express();
 const PORT = 5001;
+let listaTareas = require("./data");
 
-const listaTareas =  [
-    {
-        "id":"123456",
-        "isCompleted":false,
-        "description":"pasear al perro"
-    },
+const listViewRouter = require("./list-view-router");
+const listEditRouter = require("./list-edit-router");
 
-    {
-        "id":"1234567",
-        "isCompleted":false,
-        "description":"hacer tareas"
-    },
-    
-    { 
-        "id":"1234568",
-        "isCompleted":true,
-        "description":"avanzar en el curso"
-    }
-    ]
+app.use(express.json());
 
-const listaJson = JSON.stringify(listaTareas);
 
-app.get("/",(req, res) => {
-    res.send(listaJson);
-})
+app.use("/list-view", listViewRouter);
+app.use("/list-edit", listEditRouter); 
 
-app.listen(PORT, ()=>{
-    console.log(`servidor escuchando en http://localhost:${PORT}` )
+app.get("/", (req, res) => {
+    res.send(listaTareas);
+});
 
+
+app.listen(PORT, () => {
+    console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });
